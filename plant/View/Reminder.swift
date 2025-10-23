@@ -65,8 +65,12 @@ struct reminder: View {
                        Image(systemName: "xmark")
                            .font(.title2)
                            .padding()
-                           .background(Color.black.opacity(0.8))
+                           .background(Color.black.opacity(0.9))
                            .clipShape(Circle())
+                           .buttonStyle(.glass)
+                           .tint(Color.white)
+                       
+                           
                    }
                    
                     Spacer()
@@ -117,7 +121,7 @@ struct reminder: View {
                       
                       Spacer()
                       
-                    
+                
                       
                       
                   }
