@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State  var isShowingSheet = true
+    @State  var isShowingSheet = false
 
     var body: some View {
 
@@ -53,21 +53,7 @@ struct ContentView: View {
                     Spacer()
                     
                     
-                    
-//                    Button("Set Plant Reminder") {
-//                        isShowingSheet.toggle()
-//                            
-//                    } .foregroundColor(.white)
-//                        .fontWeight(.semibold)
-//                    
-//                        .padding()
-//                        .frame(maxWidth: .infinity)
-//                        .background(Color(red: 71/255, green: 223/255, blue: 177/255))
-//                        .cornerRadius(30)
-//                        .sheet(isPresented: $isShowingSheet)
-//                   {  reminder()
-//                            
-//                        }
+                 
                     Button {
                             isShowingSheet.toggle()
                                       
@@ -90,11 +76,12 @@ struct ContentView: View {
                         .padding(.bottom, 80)
                 }
                 
-            }.navigationTitle("My Plants 🌱").navigationBarTitleDisplayMode(.automatic)
+            }.navigationTitle("My Plant 🌱")
+.navigationBarTitleDisplayMode(.automatic)
         }
     }
 }
 
 #Preview {
-   ContentView()
+    ContentView() .preferredColorScheme(.dark)
 }
