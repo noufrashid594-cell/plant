@@ -1,17 +1,13 @@
-//
-//  plantApp.swift
-//  plant
-//
-//  Created by nouf on 28/04/1447 AH.
-//
-
 import SwiftUI
 
 @main
 struct plantApp: App {
+    @StateObject private var plantStore = PlantStore()
+
     var body: some Scene {
         WindowGroup {
-            ContentView().preferredColorScheme(.dark)
+            Splash()
+                .environmentObject(plantStore) // <- هذا مهم جدًا
         }
     }
 }
