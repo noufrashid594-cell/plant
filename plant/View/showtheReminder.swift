@@ -47,7 +47,7 @@ struct ContentView3: View {
             Text("Add your first plant to get started")
                 .foregroundColor(.gray)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity) // Center the content
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     private var plantListView: some View {
@@ -62,7 +62,7 @@ struct ContentView3: View {
     }
     
     private var headerView: some View {
-        Text("")
+        Text("My Plants 🌱")
             .font(.system(size: 34, weight: .bold))
             .foregroundColor(.white)
             .padding(.top, 10)
@@ -88,17 +88,25 @@ struct ContentView3: View {
     }
     
     private var plantScrollView: some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                ForEach(plantViewModel.plants) { plant in
-                    PlantCard(plant: plant)
-                        .transition(.asymmetric(
-                            insertion: .scale.combined(with: .opacity),
-                            removal: .scale.combined(with: .opacity)
-                        ))
-                }
+        List {
+            ForEach(plantViewModel.plants) { plant in
+                PlantCard(plant: plant)
+                    .listRowBackground(Color.clear)
+                    .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+                    .listRowSeparator(.hidden)
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button(role: .destructive) {
+                            withAnimation {
+                                plantViewModel.deletePlant(plant)
+                            }
+                        } label: {
+                            Label("Delete", systemImage: "trash.fill")
+                        }
+                    }
             }
         }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
     }
     
     private var floatingAddButton: some View {
@@ -165,9 +173,6 @@ struct PlantCard: View {
         .padding()
         .background(cardBackground)
         .overlay(cardBorder)
-        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-            deleteButton
-        }
     }
     
     // MARK: - Subviews
@@ -226,14 +231,6 @@ struct PlantCard: View {
     private var cardBorder: some View {
         RoundedRectangle(cornerRadius: 12)
             .stroke(plant.isWatered ? Color.green.opacity(0.3) : Color.clear, lineWidth: 1)
-    }
-    
-    private var deleteButton: some View {
-        Button(role: .destructive) {
-            plantViewModel.deletePlant(plant)
-        } label: {
-            Label("Delete", systemImage: "trash")
-        }
     }
 }
 
