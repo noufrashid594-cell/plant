@@ -2,12 +2,12 @@ import SwiftUI
 
 @main
 struct plantApp: App {
-    @StateObject private var plantStore = PlantStore()
+    @StateObject private var plantViewModel = PlantViewModel()
 
     var body: some Scene {
         WindowGroup {
             MainPage()
-                .environmentObject(plantStore) 
+                .environmentObject(plantViewModel)
         }
     }
 }

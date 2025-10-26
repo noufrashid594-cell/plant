@@ -1,17 +1,14 @@
 //
-//  AllRemindersClosed.swift
-//  plant
+//  AllRemindersClosed.swift
+//  plant
 //
-//  Created by nouf on 02/05/1447 AH.
+//  Created by nouf on 02/05/1447 AH.
 //
 
 import SwiftUI
 
 // MARK: - Reusable Components
 
-/**
- A custom primary button style used for the floating action button.
- */
 struct FloatingButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -31,45 +28,40 @@ struct FloatingButtonStyle: ButtonStyle {
 // MARK: - Main View
 
 struct AllRemindersClosed: View {
-    // Placeholder function for the button action
-    func addPlant() {
-        print("Add Plant button tapped!")
-        // In a real app, this would navigate to an 'Add Plant' screen
-    }
-
+    @Binding var isShowingAddPlant: Bool
+    
     var body: some View {
-        // Use a ZStack to place the content and the floating button
         ZStack(alignment: .bottomTrailing) {
             Color.black
                 .ignoresSafeArea()
 
-            // 1. Main content (dark background, centered text/image)
+            // Main content (dark background, centered text/image)
             VStack {
                 // Header (Navigation-like Title)
                 HStack {
-                    Text("My Plants")
+                    Text("")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                    
-                    Text("🌱")
+                    Text("")
                         .font(.largeTitle)
                     Spacer()
                 }
-                .foregroundColor(.white) // Ensure header text is white
+                .foregroundColor(.white)
                 .padding(.horizontal)
                 .padding(.top, 10)
 
-                Spacer() // Pushes the content to the center
+                Spacer()
 
                 // Center Content: Plant Image and Text
                 VStack(spacing: 15) {
                     // Plant Image with circular frame
-                    Image("plant2") // Using your specified image asset name
+                    Image("plant2")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 180, height: 180)
                         .clipShape(Circle())
-                        .overlay(Circle().stroke(Color.black, lineWidth: 4)) // Black stroke
+                        .overlay(Circle().stroke(Color.black, lineWidth: 4))
                         .shadow(radius: 10)
                     
                     // The "All Done!" text
@@ -85,24 +77,23 @@ struct AllRemindersClosed: View {
                         .foregroundColor(.gray)
                 }
 
-                Spacer() // Pushes the content from the bottom
+                Spacer()
             }
 
-            // 2. Floating Action Button (FAB)
-            Button(action: addPlant) {
+            // Floating Action Button (FAB)
+            Button(action: {
+                isShowingAddPlant = true
+            }) {
                 Image(systemName: "plus")
             }
             .buttonStyle(FloatingButtonStyle())
             .padding(.trailing, 25)
             .padding(.bottom, 50)
-            //.glassEffect()
+            .sheet(isPresented: $isShowingAddPlant) {
+                AddReminder()
+            }
         }
-        
         .preferredColorScheme(.dark)
-        
-        
-        
-    
     }
 }
 
@@ -110,7 +101,7 @@ struct AllRemindersClosed: View {
 
 struct AllRemindersClosed_Previews: PreviewProvider {
     static var previews: some View {
-        AllRemindersClosed()
+        AllRemindersClosed(isShowingAddPlant: .constant(false))
+            .environmentObject(PlantViewModel())
     }
 }
-
