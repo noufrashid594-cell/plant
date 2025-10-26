@@ -1,22 +1,27 @@
+//
+//  MainPage.swift
+//  plant
+//
+//  Created by nouf on 04/05/1447 AH.
+//
+
 import SwiftUI
 
-struct Splash: View {
+struct MainPage: View {
     @State private var isShowingSheet = false
     
     var body: some View {
         NavigationStack {
-            ZStack {
-                Color.black.ignoresSafeArea()
-                
+            ZStack {                
                 VStack(spacing: 20) {
                     
                     Spacer()
-                    // The requested Divider
+                
                         Divider()
-                        .frame(height: 1) // Set a fixed height for consistency
-                        .overlay(Color.white.opacity(0.15)) // Make it a subtle grey on black
+                        .frame(height: 1)
+                        .overlay(Color.white.opacity(0.15))
                         .padding(.horizontal)
-                        .padding(.bottom, 5) // Add slight space below the divider
+                        .padding(.bottom, 5)
                     Spacer()
                     Image("plant1")
                         .resizable()
@@ -49,7 +54,7 @@ struct Splash: View {
                     .tint(Color(red: 71/255, green: 223/255, blue: 177/255))
                     .padding(.top, 40)
                     .sheet(isPresented: $isShowingSheet) {
-                        reminder()
+                        AddReminder()
                     }
                 }
                 .padding(.bottom, 80)
@@ -61,5 +66,5 @@ struct Splash: View {
 }
 
 #Preview {
-    Splash().preferredColorScheme(.dark)
+    MainPage()
 }

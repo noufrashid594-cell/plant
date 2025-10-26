@@ -102,10 +102,7 @@ struct AllRemindersClosed: View {
         
         
         
-        // Force dark mode as shown in the screenshot
-        // Removed .navigationTitle and .navigationBarTitleDisplayMode from here
-        // as they are typically applied to the NavigationView that contains this view,
-        // not the view itself when it's the root of the screen.
+    
     }
 }
 

@@ -6,8 +6,8 @@ struct plantApp: App {
 
     var body: some Scene {
         WindowGroup {
-            Splash()
-                .environmentObject(plantStore) // <- هذا مهم جدًا
+            MainPage()
+                .environmentObject(plantStore) 
         }
     }
 }
