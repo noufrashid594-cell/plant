@@ -12,7 +12,7 @@ A plant care reminder app that keeps your plants thriving by notifying you when 
 
  
 # App Screenshots ✨
-https://github.com/noufrashid594-cell/plant/blob/main/Planto.jpeg?raw=true
+https://github.com/noufrashid594-cell/plant/blob/16cc4db013cac27865ee20dd616e7876c75b55cb/Planto.jpeg
 
 
 ## Main Screens🌱
