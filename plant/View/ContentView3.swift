@@ -3,32 +3,31 @@ import SwiftUI
 struct ContentView3: View {
     @EnvironmentObject var plantViewModel: PlantViewModel
     @State private var isShowingAddPlant = false
+    @State private var isShowingSettings = false
     
     var body: some View {
-        NavigationView {
-            ZStack(alignment: .bottomTrailing) {
-                Color.black.ignoresSafeArea()
-                
-                if plantViewModel.hasPlants {
-                    if plantViewModel.allPlantsWatered {
-                        // Show completion screen when all plants are watered
-                        AllRemindersClosed(isShowingAddPlant: $isShowingAddPlant)
-                    } else {
-                        // Show plant list
-                        plantListView
-                    }
+        ZStack(alignment: .bottomTrailing) {
+            Color.black.ignoresSafeArea()
+            
+            if plantViewModel.hasPlants {
+                if plantViewModel.allPlantsWatered {
+                    // Show completion screen when all plants are watered
+                    AllRemindersClosed(isShowingAddPlant: $isShowingAddPlant)
                 } else {
-                    // Show empty state
-                    emptyStateView
+                    // Show plant list
+                    plantListView
                 }
-                
-                // Only show floating button if not all plants are watered
-                if !plantViewModel.allPlantsWatered {
-                    floatingAddButton
-                }
+            } else {
+                // Show empty state
+                emptyStateView
             }
-            .navigationBarHidden(true)
+            
+            // Only show floating button if not all plants are watered
+            if !plantViewModel.allPlantsWatered {
+                floatingAddButton
+            }
         }
+        .navigationBarHidden(true)  // ← HIDE THE NAVIGATION BAR
     }
     
     // MARK: - Subviews
@@ -52,20 +51,34 @@ struct ContentView3: View {
     
     private var plantListView: some View {
         VStack(alignment: .leading, spacing: 12) {
-            headerView
+            // Header with settings button
+            HStack {
+                Text("My Plants 🌱")
+                    .font(.system(size: 34, weight: .bold))
+                    .foregroundColor(.white)
+                
+                Spacer()
+                
+                Button(action: {
+                    isShowingSettings = true
+                }) {
+                    Image(systemName: "gear")
+                        .font(.system(size: 20))
+                        .foregroundColor(.white)
+                }
+            }
+            .padding(.top, 10)
+            
             Divider().background(Color.gray)
+            
             progressBarView
             plantScrollView
             Spacer()
         }
         .padding(.horizontal)
-    }
-    
-    private var headerView: some View {
-        Text("My Plants 🌱")
-            .font(.system(size: 34, weight: .bold))
-            .foregroundColor(.white)
-            .padding(.top, 10)
+        .sheet(isPresented: $isShowingSettings) {
+            NotificationSettingsView()
+        }
     }
     
     private var progressBarView: some View {

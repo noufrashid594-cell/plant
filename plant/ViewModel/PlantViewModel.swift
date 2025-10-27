@@ -1,16 +1,11 @@
-//
-//  PlantViewModel.swift
-//  plant
-//
-//  Created by nouf on 04/05/1447 AH.
-//
-
 import SwiftUI
 import Combine
 
 class PlantViewModel: ObservableObject {
     // MARK: - Published Properties
     @Published var plants: [Plant] = []
+    
+    private let notificationManager = NotificationManager.shared
     
     // MARK: - Computed Properties
     var wateredCount: Int {
@@ -45,6 +40,9 @@ class PlantViewModel: ObservableObject {
         withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
             plants.append(plant)
         }
+        
+        // Schedule notification for the new plant
+        scheduleNotificationIfAuthorized(for: plant)
     }
     
     /// Toggle the watered status of a specific plant
@@ -52,12 +50,20 @@ class PlantViewModel: ObservableObject {
         if let index = plants.firstIndex(where: { $0.id == plant.id }) {
             withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
                 plants[index].isWatered.toggle()
+                
+                // If plant is watered, reschedule notification
+                if plants[index].isWatered {
+                    rescheduleNotification(for: plants[index])
+                }
             }
         }
     }
     
     /// Delete a specific plant
     func deletePlant(_ plant: Plant) {
+        // Cancel notification before deleting
+        notificationManager.cancelNotification(for: plant)
+        
         withAnimation(.easeOut(duration: 0.3)) {
             plants.removeAll { $0.id == plant.id }
         }
@@ -65,6 +71,11 @@ class PlantViewModel: ObservableObject {
     
     /// Delete plants at specific indices
     func deletePlants(at offsets: IndexSet) {
+        // Cancel notifications for plants being deleted
+        offsets.forEach { index in
+            notificationManager.cancelNotification(for: plants[index])
+        }
+        
         withAnimation(.easeOut(duration: 0.3)) {
             plants.remove(atOffsets: offsets)
         }
@@ -94,6 +105,9 @@ class PlantViewModel: ObservableObject {
                 plants[index].isWatered = false
             }
         }
+        
+        // Reschedule all notifications
+        rescheduleAllNotifications()
     }
     
     /// Mark all plants as watered
@@ -103,5 +117,36 @@ class PlantViewModel: ObservableObject {
                 plants[index].isWatered = true
             }
         }
+    }
+    
+    // MARK: - Notification Methods
+    
+    /// Request notification permission
+    func requestNotificationPermission() async {
+        _ = await notificationManager.requestAuthorization()
+    }
+    
+    /// Schedule notification if authorized
+    private func scheduleNotificationIfAuthorized(for plant: Plant) {
+        if notificationManager.isAuthorized {
+            notificationManager.scheduleNotification(for: plant)
+        }
+    }
+    
+    /// Reschedule notification for a plant
+    private func rescheduleNotification(for plant: Plant) {
+        notificationManager.scheduleNotification(for: plant)
+    }
+    
+    /// Reschedule all notifications
+    func rescheduleAllNotifications() {
+        plants.forEach { plant in
+            notificationManager.scheduleNotification(for: plant)
+        }
+    }
+    
+    /// Cancel all notifications
+    func cancelAllNotifications() {
+        notificationManager.cancelAllNotifications()
     }
 }
