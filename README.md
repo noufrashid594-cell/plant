@@ -12,7 +12,8 @@ A plant care reminder app that keeps your plants thriving by notifying you when 
 
  
 # App Screenshots ✨
-![Uploading Screenshot 1447-05-06 at 12.24.39 AM.png…]()
+<img width="996" height="561" alt="Screenshot 1447-05-06 at 12 24 39 AM" src="https://github.com/user-attachments/assets/7009a274-8db8-406a-9455-7f7b584ba119" />
+
 
 
 
